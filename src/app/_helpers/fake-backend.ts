@@ -11,6 +11,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         // array in local storage for registered users
         let users: any[] = JSON.parse(localStorage.getItem('users')) || [];
+        let students: any[] = JSON.parse(localStorage.getItem('students')) || [];
 
         // wrap in delayed observable to simulate server api call
         return of(null).pipe(mergeMap(() => {
@@ -45,6 +46,17 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 // check for fake auth token in header and return users if valid, this security is implemented server side in a real application
                 if (request.headers.get('Authorization') === 'Bearer fake-jwt-token') {
                     return of(new HttpResponse({ status: 200, body: users }));
+                } else {
+                    // return 401 not authorised if token is null or invalid
+                    return throwError({ status: 401, error: { message: 'Unauthorised' } });
+                }
+            }
+
+            // get students
+            if (request.url.endsWith('/student-list') && request.method === 'GET') {
+                // check for fake auth token in header and return users if valid, this security is implemented server side in a real application
+                if (request.headers.get('Authorization') === 'Bearer fake-jwt-token') {
+                    return of(new HttpResponse({ status: 200, body: students }));
                 } else {
                     // return 401 not authorised if token is null or invalid
                     return throwError({ status: 401, error: { message: 'Unauthorised' } });
@@ -88,6 +100,50 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 return of(new HttpResponse({ status: 200 }));
             }
 
+            // register student
+            if (request.url.endsWith('/student-onboard') && request.method === 'POST') {
+                // get new user object from post body
+                let newStudent = request.body;
+
+                // validation
+                // let duplicateUser = users.filter(user => { return user.username === newUser.username; }).length;
+                // if (duplicateUser) {
+                //     return throwError({ error: { message: 'Username "' + newUser.username + '" is already taken' } });
+                // }
+
+                // save new user
+                newStudent.id = students.length + 1;
+                students.push(newStudent);
+                localStorage.setItem('students', JSON.stringify(students));
+
+                // respond 200 OK
+                return of(new HttpResponse({ status: 200 }));
+            }
+
+            // delete user
+            if (request.url.match(/\/student-list\/\d+$/) && request.method === 'DELETE') {
+                // check for fake auth token in header and return user if valid, this security is implemented server side in a real application
+                if (request.headers.get('Authorization') === 'Bearer fake-jwt-token') {
+                    // find user by id in users array
+                    let urlParts = request.url.split('/');
+                    let id = parseInt(urlParts[urlParts.length - 1]);
+                    for (let i = 0; i < students.length; i++) {
+                        let student = students[i];
+                        if (student.id === id) {
+                            // delete user
+                            students.splice(i, 1);
+                            localStorage.setItem('students', JSON.stringify(students));
+                            break;
+                        }
+                    }
+
+                    // respond 200 OK
+                    return of(new HttpResponse({ status: 200 }));
+                } else {
+                    // return 401 not authorised if token is null or invalid
+                    return throwError({ status: 401, error: { message: 'Unauthorised' } });
+                }
+            }
             // delete user
             if (request.url.match(/\/users\/\d+$/) && request.method === 'DELETE') {
                 // check for fake auth token in header and return user if valid, this security is implemented server side in a real application

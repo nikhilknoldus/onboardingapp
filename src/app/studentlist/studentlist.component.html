@@ -1,0 +1,127 @@
+<app-navigation></app-navigation>
+
+<div *ngIf="studentCount; then studentList; else noStudent"></div>
+
+<ng-template #studentList>
+  <h4>Student List</h4>
+  <label class="sr-only" for="inlineFormInputGroup">Search Student</label>
+  <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+    <div class="input-group-addon">
+      <span class="glyphicon glyphicon-search"></span>
+    </div>
+    <input
+      type="text"
+      [(ngModel)]="searchText"
+      #txtFname
+      class="form-control"
+      id="inlineFormInputGroup"
+      placeholder="Search student"
+    />
+  </div>
+  <div class="row">
+    <div
+      class="col-sm-6 mt-4 mb-3"
+      *ngFor="
+        let student of (students | searchFilter: { studentName: searchText })
+      "
+    >
+      <div class="card">
+        <div class="card-header">
+          Details
+        </div>
+        <div class="card-body">
+          <p>
+            <b>{{ student?.studentName }}</b>
+          </p>
+          <p><b>Father's Name</b>: {{ student.fathersName }}</p>
+          <p><b>DOB</b>: {{ student.dob }}</p>
+          <p><b>Last Score</b>: {{ student.lastClassScore }}</p>
+
+          <a class="btn btn-primary mr-2" (click)="UpdateDetails(student)">Edit</a>
+          <a
+            class="btn btn-default mr-2"
+            data-toggle="modal"
+            data-target="#myModal"
+            (click)="viewDetails(student)"
+            >View</a
+          >
+          <a class="btn btn-danger mr-2" (click)="deleteStudent(student)"
+            >Delete</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <!-- The Modal -->
+    <div class="modal" id="myModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">
+              Student Details: {{ studentDetails?.studentName }}
+            </h4>
+            <button type="button" class="close" data-dismiss="modal">
+              ×
+            </button>
+          </div>
+          <!-- Modal body -->
+          <div class="modal-body">
+            <ul class="list-group list-group-flush">
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+              >
+                Student Name
+                <span>{{ studentDetails?.studentName }}</span>
+              </li>
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+              >
+                Category
+                <span>{{ studentDetails?.category }}</span>
+              </li>
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+              >
+                DOB
+                <span class="badge badge-primary badge-pill">{{
+                  studentDetails?.dob
+                }}</span>
+              </li>
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+              >
+                Fathers Name
+                <span>{{ studentDetails?.fathersName }}</span>
+              </li>
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+              >
+                Mothers Name
+                <span>{{ studentDetails?.mothersName }}</span>
+              </li>
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center"
+              >
+                Last Class Score
+                <span class="badge badge-primary badge-pill">{{
+                  studentDetails?.lastClassScore
+                }}</span>
+              </li>
+            </ul>
+          </div>
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal ends-->
+  </div>
+</ng-template>
+<ng-template #noStudent>
+  <h3>No Student onboarded yet!</h3> <a routerLink='/student-onboard'>Onboard now</a>
+</ng-template>

@@ -35,6 +35,9 @@ export class LoginComponent implements OnInit {
     // convenience getter for easy access to form fields
     get f() { return this.loginForm.controls; }
 
+    resetForm(){
+        this.loginForm.reset();
+    }
     onSubmit() {
         this.submitted = true;
 

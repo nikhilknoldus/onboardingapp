@@ -1,0 +1,113 @@
+<app-navigation></app-navigation>
+<h4>On Boarding Form</h4>
+<br />
+<div class="col-sm-11 col-md-11 ">
+  <form [formGroup]="onboardingForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <input
+        type="text"
+        placeholder="STUDENT NAME"
+        formControlName="studentName"
+        class="form-control"
+        [ngClass]="{ 'is-invalid': submitted && f.studentName.errors }"
+      />
+      <div *ngIf="submitted && f.studentName.errors" class="invalid-feedback">
+        <div *ngIf="f.studentName.errors.required">Name is required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <input
+        type="text"
+        formControlName="category"
+        placeholder="CATEGORY"
+        class="form-control"
+        [ngClass]="{ 'is-invalid': submitted && f.category.errors }"
+      />
+      <div *ngIf="submitted && f.category.errors" class="invalid-feedback">
+        <div *ngIf="f.category.errors.required">Category is required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <h4>Documents: </h4>
+      <label class="checkbox-inline ml-2 mb-4">
+        <input type="checkbox" value="" />Domicile
+      </label>
+      <label class="checkbox-inline  ml-2 mb-4">
+        <input type="checkbox" value="" />Birth Certificate
+      </label>
+      <label class="checkbox-inline  ml-2 mb-4">
+        <input type="checkbox" value="" />Marksheets
+      </label>
+      <label class="checkbox-inline  ml-2 mb-4">
+        <input type="checkbox" value="" />Police Clearance
+      </label>
+      <label class="checkbox-inline  ml-2 mb-4">
+        <input type="checkbox" value="" />Passport
+      </label>
+      <label class="checkbox-inline  ml-2 mb-4">
+        <input type="checkbox" value="" />Declaration
+      </label>
+    </div>
+    <div class="form-group">
+      <input
+        type="date"
+        formControlName="dob"
+        placeholder="DOB"
+        class="form-control"
+        [ngClass]="{ 'is-invalid': submitted && f.dob.errors }"
+      />
+      <div *ngIf="submitted && f.dob.errors" class="invalid-feedback">
+        <div *ngIf="f.dob.errors.required">DOB is required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <input
+        type="text"
+        formControlName="fathersName"
+        placeholder="FATHER NAME"
+        class="form-control"
+        [ngClass]="{ 'is-invalid': submitted && f.fathersName.errors }"
+      />
+      <div *ngIf="submitted && f.fathersName.errors" class="invalid-feedback">
+        <div *ngIf="f.fathersName.errors.required">Father name is required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <input
+        type="text"
+        formControlName="mothersName"
+        placeholder="MOTHER NAME"
+        class="form-control"
+        [ngClass]="{ 'is-invalid': submitted && f.mothersName.errors }"
+      />
+      <div *ngIf="submitted && f.mothersName.errors" class="invalid-feedback">
+        <div *ngIf="f.mothersName.errors.required">Mother name is required</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <input
+        type="text"
+        formControlName="lastClassScore"
+        placeholder="LAST CLASS SCORE"
+        class="form-control"
+        [ngClass]="{ 'is-invalid': submitted && f.lastClassScore.errors }"
+      />
+      <div
+        *ngIf="submitted && f.lastClassScore.errors"
+        class="invalid-feedback"
+      >
+        <div *ngIf="f.lastClassScore.errors.required">
+          Last score is required
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <button [disabled]="loading" class="btn btn-primary">Onboard</button>
+      <img
+        *ngIf="loading"
+        src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+      />
+      <a [routerLink]="['/']" class="btn btn-link">Cancel</a>
+    </div>
+  </form>
+</div>
