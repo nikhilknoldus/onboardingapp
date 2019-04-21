@@ -3,6 +3,7 @@ import { UserService, StudentService } from "../_services";
 import Swal from "sweetalert2";
 import { Student } from "../_models/students";
 import { first } from "rxjs/operators";
+import { Router } from '@angular/router';
 
 @Component({
   selector: "app-studentlist",
@@ -15,7 +16,10 @@ export class StudentlistComponent implements OnInit {
   studentCount = 1;
   studentDetails: any;
   searchText: string;
-  constructor(private studentService: StudentService) {}
+
+  byId:any = {};
+
+  constructor(private studentService: StudentService, private _router:Router) {}
 
   ngOnInit() {
     this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
@@ -32,13 +36,21 @@ export class StudentlistComponent implements OnInit {
       });
   }
 
-  UpdateDetails(id: number){
-    alert(JSON.stringify(id))
+  editStudentDetails(id: number){
+    this._router.navigate(['/student-onboard', id])
   }
 
   viewDetails(studentDetails:any){
     this.studentDetails = studentDetails;
   }
+
+  // viewById(id){
+  //   this.byId = this.studentService.getById(id).subscribe(de => {
+  //     this.byId = de;
+  //     this._router.navigate(['/student-onboard', id])
+  //     console.log("detailsssssssssss:"+ JSON.stringify(this.byId));
+  //   });
+  // }
 
   deleteStudent(id: number) {
     Swal.fire({

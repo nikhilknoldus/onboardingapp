@@ -37,7 +37,7 @@
           <p><b>DOB</b>: {{ student.dob }}</p>
           <p><b>Last Score</b>: {{ student.lastClassScore }}</p>
 
-          <a class="btn btn-primary mr-2" (click)="UpdateDetails(student)">Edit</a>
+          <a class="btn btn-primary mr-2" (click)="editStudentDetails(student.id)">Edit</a>
           <a
             class="btn btn-default mr-2"
             data-toggle="modal"
@@ -45,7 +45,7 @@
             (click)="viewDetails(student)"
             >View</a
           >
-          <a class="btn btn-danger mr-2" (click)="deleteStudent(student)"
+          <a class="btn btn-danger mr-2" (click)="deleteStudent(student.id)"
             >Delete</a
           >
         </div>

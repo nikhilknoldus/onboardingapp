@@ -11,7 +11,7 @@ const appRoutes: Routes = [
     { path: '', component: StudentlistComponent, canActivate: [AuthGuard], pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
-    { path: 'student-onboard', component: OnboardingformComponent },
+    { path: 'student-onboard/:id', component: OnboardingformComponent },
     { path: 'student-list', component: StudentlistComponent },
     { path: 'student-list/:id', component: StudentlistComponent },
     // otherwise redirect to home
