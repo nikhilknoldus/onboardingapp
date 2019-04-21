@@ -15,22 +15,18 @@
         <div *ngIf="f.studentName.errors.required">Name is required</div>
       </div>
     </div>
+    <h4>Category:</h4>
     <div class="form-group">
-      <input
-        type="text"
-        formControlName="category"
-        placeholder="CATEGORY"
-        class="form-control"
-        [ngClass]="{ 'is-invalid': submitted && f.category.errors }"
-      />
-      <div *ngIf="submitted && f.category.errors" class="invalid-feedback">
-        <div *ngIf="f.category.errors.required">Category is required</div>
-      </div>
+      <select (change)="selectedCategory()" formControlName="category" class="form-control category" placeholder="SELECT CATEGORY">
+        <option value="Domestic" selected>Domestic</option>
+        <option value="International">International</option>
+      </select>
     </div>
+    
     <div class="form-group">
-      <h4>Documents: </h4>
+      <h4>Documents:</h4>
       <label class="checkbox-inline ml-2 mb-4">
-        <input type="checkbox" value="" />Domicile
+        <input type="checkbox" value="" required />Domicile
       </label>
       <label class="checkbox-inline  ml-2 mb-4">
         <input type="checkbox" value="" />Birth Certificate
@@ -38,10 +34,10 @@
       <label class="checkbox-inline  ml-2 mb-4">
         <input type="checkbox" value="" />Marksheets
       </label>
-      <label class="checkbox-inline  ml-2 mb-4">
+      <label class="checkbox-inline  ml-2 mb-4" *ngIf="optedCategory">
         <input type="checkbox" value="" />Police Clearance
       </label>
-      <label class="checkbox-inline  ml-2 mb-4">
+      <label class="checkbox-inline  ml-2 mb-4" *ngIf="optedCategory">
         <input type="checkbox" value="" />Passport
       </label>
       <label class="checkbox-inline  ml-2 mb-4">
@@ -102,13 +98,20 @@
       </div>
     </div>
     <div class="form-group">
-      <button [disabled]="loading" class="btn btn-primary">Onboard</button>
+      <button *ngIf="!studentId" [disabled]="loading" class="btn btn-primary">
+        Onboard
+      </button>
       <img
         *ngIf="loading"
         src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
       />
-      <a [routerLink]="['/']" class="btn btn-link">Cancel</a>
-      <a (click)="updateStudent(studentId)">Update</a>
+      <a class="btn btn-default ml-2 mr-2" [routerLink]="['/']">Cancel</a>
+      <a
+        *ngIf="studentId"
+        class="btn btn-primary"
+        (click)="updateStudent(studentId)"
+        >Update</a
+      >
     </div>
   </form>
 </div>

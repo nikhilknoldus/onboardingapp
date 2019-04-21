@@ -5,34 +5,42 @@
 <ng-template #studentList>
   <h4>Student List</h4>
   <label class="sr-only" for="inlineFormInputGroup">Search Student</label>
-  <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-    <div class="input-group-addon">
-      <span class="glyphicon glyphicon-search"></span>
-    </div>
-    <input
-      type="text"
-      [(ngModel)]="searchText"
-      #txtFname
-      class="form-control"
-      id="inlineFormInputGroup"
-      placeholder="Search student"
-    />
+  <div class="form-inline">
+      <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+          <div class="input-group-addon">
+            <span class="glyphicon glyphicon-search"></span>
+          </div>  
+          <input
+            type="text"
+            [(ngModel)]="searchText"
+            #txtFname
+            class="form-control"
+            id="inlineFormInputGroup"
+            placeholder="Search student"
+          />
+        </div>       
+      <select [(ngModel)]="searchCategory" class="form-control category">
+          <option value="" selected>All</option>
+          <option value="International">International</option>
+          <option value="Domestic">Domestic</option>
+        </select>  <span class="ml-2">Category Filter</span>
   </div>
   <div class="row">
     <div
       class="col-sm-6 mt-4 mb-3"
       *ngFor="
-        let student of (students | searchFilter: { studentName: searchText })
+        let student of (students | searchFilter: { studentName: searchText } | searchFilter : {category: searchCategory})
       "
     >
       <div class="card">
-        <div class="card-header">
+        <div class="card-header" [ngClass]="{'international': student.category == 'International', 'domestic': student.category == 'Domestic'}">
           Details
         </div>
         <div class="card-body">
           <p>
             <b>{{ student?.studentName }}</b>
           </p>
+          <p><b>Category</b>: {{ student.category }}</p>
           <p><b>Father's Name</b>: {{ student.fathersName }}</p>
           <p><b>DOB</b>: {{ student.dob }}</p>
           <p><b>Last Score</b>: {{ student.lastClassScore }}</p>
@@ -123,5 +131,5 @@
   </div>
 </ng-template>
 <ng-template #noStudent>
-  <h3>No Student onboarded yet!</h3> <a routerLink='/student-onboard'>Onboard now</a>
+  <h3>No Student onboarded yet!</h3> <a routerLink='/student-onboard/0'>Onboard now</a>
 </ng-template>

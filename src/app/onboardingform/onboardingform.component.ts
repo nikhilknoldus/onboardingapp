@@ -18,6 +18,7 @@ export class OnboardingformComponent implements OnInit {
   submitted = false;
   studentId:number;
   student: any;
+  optedCategory = false;
   studentDetails:any = {};
 
   constructor(
@@ -32,8 +33,7 @@ export class OnboardingformComponent implements OnInit {
     this.onboardingForm = this.formBuilder.group({
       studentName: ["", Validators.required],
       category: ["", Validators.required],
-      // documents: ["", Validators.required],
-      dob: Date,
+      dob: ["", Validators.required],
       fathersName: ["", Validators.required],
       mothersName: ["", Validators.required],
       lastClassScore: ["", Validators.required]
@@ -46,6 +46,14 @@ export class OnboardingformComponent implements OnInit {
     });
   }
 
+  selectedCategory(){
+    if(this.onboardingForm.value.category == "International")
+    {
+      this.optedCategory = true;
+    }else{
+      this.optedCategory = false;
+    }
+  }
   getStudentById(id) {
     if (id == 0) {
       this.student= {

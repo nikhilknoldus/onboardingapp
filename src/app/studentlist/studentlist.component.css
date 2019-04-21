@@ -1,0 +1,10 @@
+.category {
+    height: 3.2rem !important;
+}
+
+.international {
+    background: skyblue;
+}
+.domestic {
+    background: orange;
+}

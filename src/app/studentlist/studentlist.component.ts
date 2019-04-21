@@ -16,6 +16,7 @@ export class StudentlistComponent implements OnInit {
   studentCount = 1;
   studentDetails: any;
   searchText: string;
+  searchCategory: string;
 
   byId:any = {};
 
