@@ -20,9 +20,9 @@ export class StudentService {
         return this.http.post(`${environment.apiUrl}/student-onboard`, student);
     }
 
-    // update(student: Student) {
-    //     return this.http.put(`${environment.apiUrl}/student-list/` + student.id, student);
-    // }
+    update(student: Student) {
+        return this.http.put(`${environment.apiUrl}/student-onboard/${student.id}`, student);
+    }
 
     delete(id: number) {
         return this.http.delete(`${environment.apiUrl}/student-list/` + id);

@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { first } from "rxjs/operators";
+import Swal from "sweetalert2";
 
 import { AlertService, StudentService } from "../_services";
 import { Student } from "../_models/students";
@@ -15,8 +16,9 @@ export class OnboardingformComponent implements OnInit {
   onboardingForm: FormGroup;
   loading = false;
   submitted = false;
-
+  studentId:number;
   student: any;
+  studentDetails:any = {};
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,6 +42,7 @@ export class OnboardingformComponent implements OnInit {
     this._route.paramMap.subscribe(paraMap => {
       const id = +paraMap.get("id");
       this.getStudentById(id);
+      this.studentId = id;
     });
   }
 
@@ -58,6 +61,7 @@ export class OnboardingformComponent implements OnInit {
     else{
       this.studentService.getById(id).subscribe(details => {
         this.student = details;
+        this.studentDetails = this.student;
         this.onboardingForm.patchValue(this.student)
       })
      }
@@ -88,5 +92,33 @@ export class OnboardingformComponent implements OnInit {
           this.loading = false;
         }
       );
+  }
+
+  updateStudent(id:number){
+    this.mapFormValuesToStudentModel();
+    if(this.onboardingForm.invalid){
+      return;
+    }
+    this.loading= true;
+    this.studentService.update(this.studentDetails)
+    .pipe(first())
+    .subscribe(
+      data => {
+        Swal.fire('Updated Successfully')
+        this.router.navigate(['/student-list'])
+      },
+      error => {
+        Swal.fire('Some issues, Please re-try')
+      }
+    )
+  }
+  mapFormValuesToStudentModel (){
+    this.studentDetails.studentName = this.onboardingForm.value.studentName;
+    this.studentDetails.category = this.onboardingForm.value.category;
+    this.studentDetails.fathersName = this.onboardingForm.value.fathersName;
+    this.studentDetails.mothersName = this.onboardingForm.value.mothersName;
+    this.studentDetails.dob = this.onboardingForm.value.dob;
+    this.studentDetails.lastClassScore = this.onboardingForm.value.lastClassScore;
+    
   }
 }

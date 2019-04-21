@@ -137,6 +137,27 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 return of(new HttpResponse({ status: 200 }));
             }
 
+              // Update student
+              if (request.url.match(/\/student-onboard\/\d+$/) && request.method === 'PUT') {
+                 let urlParts = request.url.split('/');
+                    let id = parseInt(urlParts[urlParts.length - 1]);
+                    for (let i = 0; i < students.length; i++) {
+                        let student = students[i];
+                        if (student.id === id) {
+                            students.splice(i, 1);
+                            // localStorage.setItem('students', JSON.stringify(students));
+                            let newStudent = request.body;
+                            newStudent.id = students.length + 1;
+                            students.push(newStudent);
+                            localStorage.setItem('students', JSON.stringify(students));
+                            break;
+                        }
+                    }
+
+                // respond 200 OK
+                return of(new HttpResponse({ status: 200 }));
+            }
+
             // delete user
             if (request.url.match(/\/student-list\/\d+$/) && request.method === 'DELETE') {
                 // check for fake auth token in header and return user if valid, this security is implemented server side in a real application
@@ -153,7 +174,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                             break;
                         }
                     }
-
                     // respond 200 OK
                     return of(new HttpResponse({ status: 200 }));
                 } else {
